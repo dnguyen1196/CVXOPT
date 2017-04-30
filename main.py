@@ -41,20 +41,25 @@ ACTIVE = np.array([0,44.98,71.41,71.41])
 REACTIVE = np.array([0,44.1,70,70])
 
 ACTIVE_CONSTRAINTS = np.zeros([4,2])
-ACTIVE_CONSTRAINTS[:,0] = ACTIVE - rand(4)*10
-ACTIVE_CONSTRAINTS[:,1] = ACTIVE + rand(4)*10
+ACTIVE_CONSTRAINTS[:,0] = [0,39,65,65]
+ACTIVE_CONSTRAINTS[:,1] = [6,50,77,77]
 
 REACTIVE_CONSTRAINTS = np.zeros([4,2])
-REACTIVE_CONSTRAINTS[:,0] = REACTIVE - rand(4)*10
-REACTIVE_CONSTRAINTS[:,1] = REACTIVE + rand(4)*10
+REACTIVE_CONSTRAINTS[:,0] = [0,39,64,64]
+REACTIVE_CONSTRAINTS[:,1] = [6,50,77,77]
 
-VOLTAGE_CONSTRAINTS = np.zeros([4,2])
+VOLTAGE_CONSTRAINTS = np.zeros([4,2]) # Vanja says this is legit
 VOLTAGE_CONSTRAINTS[:,0] = np.array([0.9,0.9,0.9,0.9])
 VOLTAGE_CONSTRAINTS[:,1] = np.array([1.1,1.1,1.1,1.1])
 
 # Make sure that voltage constraints is not negative!!
 
 OPF = OptimalPowerFlow(Y, ACTIVE_CONSTRAINTS, REACTIVE_CONSTRAINTS, VOLTAGE_CONSTRAINTS)
-OPF.test()
 
+OPF.concatenateCVector()
+OPF.generateF_matrices()
+y = np.negative(np.ones(6 * OPF.COUNT))
+t = 1.0
 
+y = OPF.center(y,t)
+# print("Center:",y)
